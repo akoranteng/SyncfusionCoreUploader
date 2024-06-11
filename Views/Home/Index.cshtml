@@ -1,0 +1,47 @@
+﻿@{
+	ViewData["Title"] = "Home Page";
+
+}
+@using Syncfusion.EJ2;
+@using Newtonsoft.Json
+@model SyncfusionCoreUploader.Controllers.ControlName;
+
+<h4>Dropdown</h4>
+@{
+	var sort = "Ascending";
+	var query = "new ej.data.Query().select(['FirstName', 'EmployeeID']).take(10).requiresCount()";
+}
+<div class="row">
+	<div class="col-md-6 col-xl-6">
+		<div class="control-section form-group">
+			<label class="form-label fw-normal">Local data</label>
+			<ejs-combobox id="supportcoordinatorid" name="SupportCoordinatorId" cssClass="e-outline" dataSource="@Model.SupportCoordinatorDataList" placeholder="e.g. Basketball" allowFiltering="true" filtering="onfiltering" value="@Model.val">
+				<e-combobox-fields text="Name" value="Code"></e-combobox-fields>
+			</ejs-combobox>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-6 col-xl-6">
+		<div class="control-section form-group">
+			<label class="form-label fw-normal">Remote data</label>
+                <ejs-combobox id="customers" autofill="true" placeholder="Select a name" popupHeight="200px" sortOrder="@sort" query="@query">
+                    <e-data-manager adaptor="WebApiAdaptor" url="https://services.syncfusion.com/aspnet/production/api/Employees" crossDomain="true"></e-data-manager>
+                    <e-combobox-fields text="FirstName" value="EmployeeID"></e-combobox-fields>
+                </ejs-combobox>
+		</div>
+	</div>
+</div>
+
+<script>
+	function onfiltering(e) {
+		debugger;
+		var query = new ej.data.Query();
+		query = (e.text !== '') ? query.where('Name', 'startswith', e.text, true) : query;
+		e.updateData(@Html.Raw(JsonConvert.SerializeObject(Model.SupportCoordinatorDataList)), query);
+	}
+</script>
+
+
+
+
